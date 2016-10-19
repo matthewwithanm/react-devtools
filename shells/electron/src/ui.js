@@ -96,6 +96,13 @@ function initialize(socket) {
   reload();
 }
 
+function setLoadingStatus(text) {
+  var el = document.getElementById('loading-status');
+  if (el) {
+    el.innerText = text;
+  }
+}
+
 var restartTimeout = null;
 function startServer(port = 8097) {
   var httpServer = require('http').createServer();
@@ -136,12 +143,12 @@ function startServer(port = 8097) {
 
   httpServer.on('error', (e) => {
     onError(e);
-    document.getElementById('loading-status').innerText = 'failed to start server :/';
+    setLoadingStatus('failed to start server :/');
     restartTimeout = setTimeout(() => startServer(port), 1000);
   });
 
   httpServer.listen(port, () => {
-    document.getElementById('loading-status').innerText = 'listening on ' + port;
+    setLoadingStatus('listening on ' + port);
   });
 
   return {
